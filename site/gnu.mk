@@ -62,6 +62,7 @@ endif
 
 FFLAGS += -fPIC
 CFLAGS += -fPIC
+CPPFLAGS += -fPIC
 
 FFLAGS_OPT = -O2 -fno-range-check
 FFLAGS_REPRO = -O2 -ggdb -fno-range-check
