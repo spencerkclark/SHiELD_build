@@ -60,6 +60,10 @@ FFLAGS += -march=native
 CFLAGS += -march-native
 endif
 
+# Needed for the wrapper
+FFLAGS += -fPIC
+CFLAGS += -fPIC
+
 FFLAGS_OPT = -O2 -fno-range-check
 FFLAGS_REPRO = -O2 -ggdb -fno-range-check
 FFLAGS_DEBUG = -O0 -ggdb -fno-unsafe-math-optimizations -frounding-math -fsignaling-nans -ffpe-trap=invalid,zero,overflow -fbounds-check

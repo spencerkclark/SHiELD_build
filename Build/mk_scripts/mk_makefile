@@ -92,6 +92,10 @@ if [ ${CONFIG} = 'shield' ] ; then
            -p libgfs.a ${BUILD_ROOT}/Build/exec/${CONFIG}_${HYDRO}.${COMP}.${BIT}.${COMPILER}/pathnames_gfs
 fi
 
+mkmf -m Makefile_libfv3 -a ${SHiELD_SRC} -t "${BUILD_ROOT}/${TEMPLATE}" -c "${FV3_cppDefs}" \
+         -p libfv3.a -o "-I${SHiELD_SRC}/FMS/include -I${NCEP_DIR}/libFMS/${COMPILER}/${BIT}" \
+          ${BUILD_ROOT}/Build/exec/${CONFIG}_${HYDRO}.${COMP}.${BIT}.${COMPILER}/pathnames_fv3
+
 mkmf -m Makefile_fv3 -a ${SHiELD_SRC} -t "${BUILD_ROOT}/${TEMPLATE}" -c "${FV3_cppDefs}" \
          -p test.x -o "-I${SHiELD_SRC}/FMS/include -I${NCEP_DIR}/libFMS/${COMPILER}/${BIT}" \
           ${BUILD_ROOT}/Build/exec/${CONFIG}_${HYDRO}.${COMP}.${BIT}.${COMPILER}/pathnames_fv3
@@ -101,6 +105,9 @@ mkmf -m Makefile_fv3 -a ${SHiELD_SRC} -t "${BUILD_ROOT}/${TEMPLATE}" -c "${FV3_c
 ############################
 sed 's/LDFLAGS/NCEPLIBS) $(LDFLAGS/g' < Makefile_fv3 > OUT
 mv OUT Makefile_fv3
+
+sed 's/LDFLAGS/NCEPLIBS) $(LDFLAGS/g' < Makefile_libfv3 > OUT
+mv OUT Makefile_libfv3
 
 ############################
 #---COMPILE -O0 (for speed)
@@ -118,6 +125,10 @@ fi
 sed -i 's"$(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) $(OTHERFLAGS) $(OTHER_FFLAGS) -c\t$(SRCROOT)atmos_cubed_sphere/model/nh_utils.F90"$(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) $(OTHERFLAGS) $(OTHER_FFLAGS) $(FAST) -c\t$(SRCROOT)atmos_cubed_sphere/model/nh_utils.F90"' Makefile_fv3
 
 sed -i 's"$(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) $(OTHERFLAGS) $(OTHER_FFLAGS) -c\t$(SRCROOT)atmos_cubed_sphere/model/fv_mapz.F90"$(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) $(OTHERFLAGS) $(OTHER_FFLAGS) $(FAST) -c\t$(SRCROOT)atmos_cubed_sphere/model/fv_mapz.F90"' Makefile_fv3
+
+sed -i 's"$(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) $(OTHERFLAGS) $(OTHER_FFLAGS) -c\t$(SRCROOT)atmos_cubed_sphere/model/nh_utils.F90"$(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) $(OTHERFLAGS) $(OTHER_FFLAGS) $(FAST) -c\t$(SRCROOT)atmos_cubed_sphere/model/nh_utils.F90"' Makefile_libfv3
+
+sed -i 's"$(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) $(OTHERFLAGS) $(OTHER_FFLAGS) -c\t$(SRCROOT)atmos_cubed_sphere/model/fv_mapz.F90"$(FC) $(CPPDEFS) $(FPPFLAGS) $(FFLAGS) $(OTHERFLAGS) $(OTHER_FFLAGS) $(FAST) -c\t$(SRCROOT)atmos_cubed_sphere/model/fv_mapz.F90"' Makefile_libfv3
 
 ############################
 
