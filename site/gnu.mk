@@ -60,9 +60,9 @@ FFLAGS += -march=native
 CFLAGS += -march-native
 endif
 
+# Needed for the wrapper
 FFLAGS += -fPIC
 CFLAGS += -fPIC
-CPPFLAGS += -fPIC
 
 FFLAGS_OPT = -O2 -fno-range-check
 FFLAGS_REPRO = -O2 -ggdb -fno-range-check
