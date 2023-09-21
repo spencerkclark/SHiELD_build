@@ -40,7 +40,7 @@ comp="prod"
 for arg in "$@"
 do
     case $arg in
-        shield|solo)
+        shield|shield_wrapper|solo)
           CONFIG="${arg#*=}"
           shift # Remove CONFIG from processing
           ;;
@@ -82,14 +82,17 @@ module list
 $FC --version
 
 NCEPLIBS="${NCEP_DIR}/libFMS/${COMPILER}/${bit}/libFMS.a"
-if [ ${CONFIG} = 'shield' ] ; then
+if [ ${CONFIG} = 'shield' ] || [ ${CONFIG} = 'shield_wrapper' ] ; then
   NCEPLIBS+=" ./libgfs.a"
   NCEPLIBS+=" -L${NCEP_DIR}/nceplibs/${COMPILER}/ -lbacio  -lsp_d  -lw3emc_d  -lw3nco_d"
 fi
 
-if [ ${CONFIG} = 'shield' ] ; then
+if [ ${CONFIG} = 'shield' ] || [ ${CONFIG} = 'shield_wrapper' ] ; then
   (cd exec/${CONFIG}_${HYDRO}.${comp}.${bit}.${COMPILER} ; make -j 8 OPENMP=Y ${COMP} AVX=${AVX} -f Makefile_gfs)
 fi
 (cd exec/${CONFIG}_${HYDRO}.${comp}.${bit}.${COMPILER} ; make -j 8 OPENMP=Y NETCDF=3 ${COMP} AVX=${AVX} ${BIT} NCEPLIBS="${NCEPLIBS}" -f Makefile_fv3)
-(cd exec/${CONFIG}_${HYDRO}.${comp}.${bit}.${COMPILER} ; make -j 8 OPENMP=Y NETCDF=3 ${COMP} AVX=${AVX} ${BIT} NCEPLIBS="${NCEPLIBS}" -f Makefile_libfv3)
+
+if [ ${CONFIG} = 'shield_wrapper' ] ; then
+    (cd exec/${CONFIG}_${HYDRO}.${comp}.${bit}.${COMPILER} ; make -j 8 OPENMP=Y NETCDF=3 ${COMP} AVX=${AVX} ${BIT} NCEPLIBS="${NCEPLIBS}" -f Makefile_libfv3)
+fi
 exit 0

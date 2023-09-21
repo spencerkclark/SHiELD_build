@@ -64,7 +64,7 @@ spin()
   for arg in "$@"
   do
       case $arg in
-          shield|solo)
+          shield|shield_wrapper|solo)
              config="${arg#*=}"
              if [ $config = 'solo' ] ; then
                config_name="SOLO"
@@ -115,7 +115,7 @@ spin()
           fi
           echo -e ' '
           echo -e "valid options are:"
-          echo -e "\t[shield(D) | solo] \t\t\t configuration"
+          echo -e "\t[shield(D) | shield_wrapper | solo] \t\t\t configuration"
           echo -e "\t[nh(D) | hydro | sw] \t\t\t executable configuration"
           echo -e "\t[prod(D) | repro | debug] \t\t compiler option settings"
           echo -e "\t[32bit(D) | 64bit] \t\t\t FV3 precision option"
@@ -129,9 +129,13 @@ spin()
       esac
   done
 
-if [ $hydro = "sw" ] && [ $config = "shield" ] ; then
+if [ $hydro = "sw" ] && { [ $config = "shield" ] || [ $config = "shield_wrapper" ]; } ; then
   echo -e ">>> option '$hydro' with '$config' is not a valid configuration"
   exit 1
+fi
+
+if [ $config = "shield_wrapper" ] && [ $bit = "32bit" ] ; then
+    echo -e ">>> shield_wrapper does not support 32bit mode"
 fi
 
 #
