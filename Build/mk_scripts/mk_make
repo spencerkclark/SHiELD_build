@@ -81,7 +81,7 @@ module list
 
 $FC --version
 
-NCEPLIBS="${NCEP_DIR}/libFMS/${COMPILER}/${bit}/libFMS.a"
+NCEPLIBS="./libfv3.a ${NCEP_DIR}/libFMS/${COMPILER}/${bit}/libFMS.a"
 if [ ${CONFIG} = 'shield' ] ; then
   NCEPLIBS+=" ./libgfs.a"
   NCEPLIBS+=" -L${NCEP_DIR}/nceplibs/${COMPILER}/ -lbacio  -lsp_d  -lw3emc_d  -lw3nco_d"
@@ -91,5 +91,5 @@ if [ ${CONFIG} = 'shield' ] ; then
   (cd exec/${CONFIG}_${HYDRO}.${comp}.${bit}.${COMPILER} ; make -j 8 OPENMP=Y ${COMP} AVX=${AVX} -f Makefile_gfs)
 fi
 (cd exec/${CONFIG}_${HYDRO}.${comp}.${bit}.${COMPILER} ; make -j 8 OPENMP=Y NETCDF=3 ${COMP} AVX=${AVX} ${BIT} NCEPLIBS="${NCEPLIBS}" -f Makefile_fv3)
-
+(cd exec/${CONFIG}_${HYDRO}.${comp}.${bit}.${COMPILER} ; make -j 8 OPENMP=Y NETCDF=3 ${COMP} AVX=${AVX} ${BIT} NCEPLIBS="${NCEPLIBS}" -f Makefile_executable)
 exit 0
