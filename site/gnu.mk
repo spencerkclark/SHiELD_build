@@ -52,6 +52,10 @@ else
 FFLAGS += -fdefault-real-8 -fdefault-double-8
 endif
 
+# Disable link-time-optimization
+FFLAGS += -fno-lto
+CFLAGS += -fno-lto
+
 ifeq ($(AVX),Y)
 FFLAGS += $(AVX_LEVEL)
 CFLAGS += $(AVX_LEVEL)
